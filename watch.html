@@ -28,7 +28,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* 헤더 (메인과 동일) */
+    /* 헤더 */
     header {
       background: #fff;
       padding: 20px 0;
@@ -49,7 +49,7 @@
       margin: 40px auto;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 3fr 1fr; /* 본문 : 사이드바 */
+      grid-template-columns: 3fr 1fr;
       gap: 40px;
     }
 
@@ -102,11 +102,52 @@
     .article-body p { margin-bottom: 20px; }
     .article-body strong { color: #000; font-weight: 700; }
     
+    /* ================= 기사 반응 (Reactions) 스타일 ================= */
+    .reaction-container {
+      margin-top: 50px;
+      padding: 30px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    .reaction-title {
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--primary-navy);
+    }
+    .reaction-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .btn-reaction {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 50%; /* 원형 버튼 */
+      width: 80px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #555;
+    }
+    .btn-reaction:hover {
+      border-color: var(--primary-navy);
+      background: #fdfdfd;
+      transform: translateY(-3px);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    .btn-reaction .emoji { font-size: 1.5rem; margin-bottom: 5px; }
+    .btn-reaction .label { font-size: 0.7rem; font-weight: bold; }
+    .btn-reaction .count { font-size: 0.75rem; color: var(--point-red); font-weight: 700; }
+
     /* 기자 정보 푸터 */
     .article-footer {
-      margin-top: 50px;
-      padding-top: 30px;
-      border-top: 2px solid #333;
+      margin-top: 30px;
       background: #f9f9f9;
       padding: 20px;
     }
@@ -149,11 +190,110 @@
     }
     .btn-back:hover { text-decoration: underline; }
 
+    /* ================= 댓글 스타일 ================= */
+    .comment-section {
+      margin-top: 40px;
+    }
+    .comment-header {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--primary-navy);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .comment-count { color: var(--point-red); }
+
+    /* 댓글 입력 폼 */
+    .comment-form {
+      background: #f1f3f5;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .comment-input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .input-name { width: 150px; }
+    .input-pw { width: 150px; }
+    .input-content {
+      width: 100%;
+      height: 80px;
+      resize: none;
+      font-family: inherit;
+    }
+    .btn-submit {
+      background: var(--primary-navy);
+      color: #fff;
+      border: none;
+      padding: 0 20px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: auto;
+      height: 40px;
+    }
+    .btn-submit:hover { opacity: 0.9; }
+    .form-bottom {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* 댓글 리스트 */
+    .comment-list {
+      list-style: none;
+    }
+    .comment-item {
+      padding: 20px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .cmt-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+    .cmt-writer { font-weight: 700; color: #333; }
+    .cmt-date { color: #999; }
+    .cmt-content {
+      font-size: 0.95rem;
+      color: #444;
+      white-space: pre-line;
+    }
+    .cmt-actions {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      display: flex;
+      gap: 5px;
+    }
+    .btn-action {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 4px 10px;
+      cursor: pointer;
+      color: #555;
+      border-radius: 3px;
+      font-size: 0.75rem;
+    }
+    .btn-action:hover { background: #f8f8f8; color: #000; }
+    .btn-report { color: #999; margin-left: auto; border:none; }
+
     /* 반응형 */
     @media (max-width: 768px) {
       .container { grid-template-columns: 1fr; }
       .article-wrap { padding: 20px; }
       .article-title { font-size: 1.8rem; }
+      .input-row { flex-direction: column; }
+      .input-name, .input-pw { width: 100%; }
+      .btn-reaction { width: 70px; height: 70px; }
     }
   </style>
 </head>
@@ -171,9 +311,46 @@
 
       <!-- 기사 내용이 로드될 곳 -->
       <div id="article-content-area">
-        <!-- 로딩 중일 때 표시 -->
         <div style="text-align:center; padding: 50px;">기사를 불러오는 중입니다...</div>
       </div>
+
+      <!-- 기사 반응 (Reactions) -->
+      <div class="reaction-container" id="reaction-area">
+        <div class="reaction-title">이 기사에 대한 반응을 남겨주세요</div>
+        <div class="reaction-buttons" id="reaction-btns">
+            <!-- JS로 버튼이 생성됩니다 -->
+        </div>
+      </div>
+
+      <!-- 기자 정보 푸터 -->
+      <div class="article-footer" id="article-footer">
+        <!-- JS로 내용 채움 -->
+      </div>
+
+      <!-- 댓글 영역 -->
+      <section class="comment-section">
+        <div class="comment-header">
+          댓글 <span class="comment-count" id="comment-cnt">0</span>
+        </div>
+
+        <!-- 댓글 입력 -->
+        <div class="comment-form">
+          <div class="input-row">
+            <input type="text" class="comment-input input-name" id="cmt-name" placeholder="닉네임">
+            <input type="password" class="comment-input input-pw" id="cmt-pw" placeholder="비밀번호">
+          </div>
+          <div class="form-bottom">
+            <textarea class="comment-input input-content" id="cmt-text" placeholder="타인을 비방하거나 욕설이 포함된 댓글은 삭제될 수 있습니다."></textarea>
+            <button class="btn-submit" onclick="addComment()">등록</button>
+          </div>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <ul class="comment-list" id="comment-list-ul">
+          <!-- JS로 로드됨 -->
+        </ul>
+      </section>
+
     </main>
 
     <!-- 사이드바 -->
@@ -181,11 +358,11 @@
       <div class="side-box">
         <div class="side-title">많이 본 뉴스</div>
         <ul class="side-list">
-            <li><a href="watch.html?id=41">한정호, 징역 3만년 확정 판결</a></li>
-            <li><a href="watch.html?id=56">패륜 발언 논란, 녹취록 공개</a></li>
-            <li><a href="watch.html?id=566">성정체성 발언 파문</a></li>
-            <li><a href="watch.html?id=69">검찰, 절도 혐의 기소</a></li>
-            <li><a href="watch.html?id=11">안자놓고 잤다... 대국민 사기극</a></li>
+            <li><a href="?id=41">한정호, 징역 3만년 확정 판결</a></li>
+            <li><a href="?id=56">패륜 발언 논란, 녹취록 공개</a></li>
+            <li><a href="?id=57">"윤하진은 전두환" 발언 파문</a></li>
+            <li><a href="?id=69">검찰, 절도 혐의 기소</a></li>
+            <li><a href="?id=11">안자놓고 잤다... 대국민 사기극</a></li>
         </ul>
       </div>
       <div class="side-box" style="background:#eef; text-align:center;">
@@ -199,8 +376,7 @@
 
   <script>
     // ==========================================
-    // 1. 뉴스 데이터 (JSON 형식 예시)
-    // 여기서 id값만 맞춰서 내용을 추가하면 됩니다.
+    // 1. 뉴스 기사 데이터
     // ==========================================
 const newsData = [
   // [메인 헤드라인 및 정치/사회 주요 이슈]
@@ -1097,28 +1273,514 @@ const newsData = [
   }
 ];
 
-    // 2. URL에서 ID 파라미터 가져오기
+    // ==========================================
+    // 2. 기사 반응 데이터 (Article Reactions) - 기사 ID 기준
+    // ==========================================
+const articleReactionData = [
+  // [메인 헤드라인 - 사상 초유의 중형 선고]
+  { "articleId": 41, "like": 45210, "angry": 112, "sad": 34, "touched": 1540, "wantMore": 12890 }, // 정의구현에 환호
+  
+  // [정치/사회 - 패륜 및 역사 왜곡]
+  { "articleId": 56, "like": 14, "angry": 28450, "sad": 4520, "touched": 2, "wantMore": 345 }, // 부모 욕설에 분노
+  { "articleId": 57, "like": 52, "angry": 15670, "sad": 890, "touched": 5, "wantMore": 420 }, // 독재 비유 논란
+  { "articleId": 59, "like": 18940, "angry": 230, "sad": 12, "touched": 89, "wantMore": 5600 }, // 참교육 지지
+  { "articleId": 60, "like": 23, "angry": 12450, "sad": 45, "touched": 1, "wantMore": 120 }, // 지역 비하
+  { "articleId": 61, "like": 567, "angry": 4520, "sad": 67, "touched": 34, "wantMore": 6780 }, // 국제 망신
+  { "articleId": 62, "like": 89, "angry": 8760, "sad": 21, "touched": 4, "wantMore": 560 }, // 분리독립 궤변
+
+  // [사회 사건 - 절도, 궤변]
+  { "articleId": 69, "like": 5670, "angry": 320, "sad": 15, "touched": 0, "wantMore": 1240 }, // 절도 기소
+  { "articleId": 71, "like": 12, "angry": 14500, "sad": 56, "touched": 0, "wantMore": 230 }, // 영토 망언
+  { "articleId": 67, "like": 45, "angry": 6780, "sad": 23, "touched": 1, "wantMore": 450 }, // 언론 비하
+  { "articleId": 35, "like": 23450, "angry": 120, "sad": 45, "touched": 560, "wantMore": 4500 }, // 1보 징역 32년
+  { "articleId": 32, "like": 34, "angry": 3450, "sad": 67, "touched": 2, "wantMore": 150 }, // 기물 파손
+  { "articleId": 34, "like": 1250, "angry": 5670, "sad": 12, "touched": 5, "wantMore": 890 }, // 껌 투기 DNA
+
+  // [연예/가십 - 정체성 혼란 및 기행]
+  { "articleId": 566, "like": 1240, "angry": 3450, "sad": 120, "touched": 560, "wantMore": 8900 }, // 게이 확정? 관심 폭발
+  { "articleId": 1, "like": 8900, "angry": 450, "sad": 23, "touched": 120, "wantMore": 15400 }, // 24시간 밀착 취재
+  { "articleId": 11, "like": 120, "angry": 890, "sad": 34, "touched": 12, "wantMore": 450 }, // 사소한 거짓말
+  { "articleId": 2, "like": 5, "angry": 21340, "sad": 1240, "touched": 2, "wantMore": 150 }, // 부모 성희롱 (극대노)
+  { "articleId": 6, "like": 8, "angry": 18900, "sad": 2350, "touched": 1, "wantMore": 120 }, // 패륜 용어 사용
+  { "articleId": 3, "like": 56, "angry": 5670, "sad": 45, "touched": 3, "wantMore": 1250 }, // 남의 가정사 폭로
+  { "articleId": 4, "like": 230, "angry": 2340, "sad": 12, "touched": 5, "wantMore": 560 }, // 기괴 릴스
+  { "articleId": 5, "like": 4560, "angry": 120, "sad": 34, "touched": 12, "wantMore": 670 }, // 해킹 쌤통
+  { "articleId": 7, "like": 560, "angry": 1240, "sad": 34, "touched": 23, "wantMore": 3450 }, // 뽀로로 집착 (어이없음)
+  { "articleId": 8, "like": 45, "angry": 7890, "sad": 23, "touched": 2, "wantMore": 150 }, // 쓰레기 투기
+  { "articleId": 9, "like": 12, "angry": 6780, "sad": 450, "touched": 4, "wantMore": 120 }, // 친구 욕설
+  { "articleId": 10, "like": 23, "angry": 9870, "sad": 120, "touched": 1, "wantMore": 340 }, // 폭행 미수
+
+  // [사회/문화 - 무지와 민폐]
+  { "articleId": 12, "like": 560, "angry": 8900, "sad": 560, "touched": 12, "wantMore": 2340 }, // 맞춤법 파괴 (조롱)
+  { "articleId": 13, "like": 15, "angry": 15670, "sad": 230, "touched": 5, "wantMore": 230 }, // 주시경 모욕
+  { "articleId": 14, "like": 34, "angry": 11230, "sad": 56, "touched": 1, "wantMore": 340 }, // 뻐큐 논란
+  { "articleId": 15, "like": 10, "angry": 19800, "sad": 3450, "touched": 12, "wantMore": 250 }, // 유혈 사태
+  { "articleId": 16, "like": 25, "angry": 25670, "sad": 120, "touched": 3, "wantMore": 450 }, // 오물풍선 지지
+  { "articleId": 17, "like": 12, "angry": 45210, "sad": 340, "touched": 5, "wantMore": 230 }, // 아이돌 비하 (팬덤 화력)
+  { "articleId": 18, "like": 120, "angry": 6780, "sad": 23, "touched": 4, "wantMore": 3450 }, // 커뮤니티 박쥐
+  { "articleId": 19, "like": 45, "angry": 4560, "sad": 120, "touched": 3, "wantMore": 890 }, // 양다리
+  { "articleId": 20, "like": 23, "angry": 8900, "sad": 670, "touched": 1, "wantMore": 340 }, // 소유권 주장
+  { "articleId": 21, "like": 230, "angry": 5670, "sad": 45, "touched": 23, "wantMore": 1560 }, // 망상 커플
+  { "articleId": 22, "like": 4560, "angry": 2340, "sad": 12, "touched": 5, "wantMore": 890 }, // 가짜뉴스 작성
+  { "articleId": 23, "like": 3450, "angry": 4560, "sad": 120, "touched": 89, "wantMore": 1540 }, // 학원 폐지 시위 (호불호 갈림)
+  { "articleId": 24, "like": 230, "angry": 1240, "sad": 12, "touched": 4, "wantMore": 890 }, // 당연한 소리
+  { "articleId": 25, "like": 1540, "angry": 340, "sad": 890, "touched": 23, "wantMore": 3450 }, // 짜파게티 (웃김)
+  { "articleId": 26, "like": 12, "angry": 12340, "sad": 230, "touched": 2, "wantMore": 120 }, // 패드립
+  { "articleId": 27, "like": 45, "angry": 15670, "sad": 34, "touched": 1, "wantMore": 340 }, // 남혐 발언
+  { "articleId": 28, "like": 10, "angry": 13450, "sad": 560, "touched": 3, "wantMore": 230 }, // 누명 씌우기
+  { "articleId": 29, "like": 56, "angry": 6780, "sad": 45, "touched": 4, "wantMore": 560 }, // 어린이집 점거
+  { "articleId": 30, "like": 340, "angry": 5670, "sad": 67, "touched": 34, "wantMore": 780 }, // 양성애자?
+  { "articleId": 49, "like": 15, "angry": 16780, "sad": 120, "touched": 2, "wantMore": 250 }, // 바리캉 테러 미수
+  { "articleId": 55, "like": 34, "angry": 4560, "sad": 12, "touched": 2, "wantMore": 150 }, // TV 욕설
+
+  // [정치/역사 - 심각한 어그로]
+  { "articleId": 58, "like": 120, "angry": 7890, "sad": 34, "touched": 5, "wantMore": 560 }, // 정치인 음모론
+  { "articleId": 63, "like": 8, "angry": 56780, "sad": 2340, "touched": 1, "wantMore": 670 }, // 독립 반대 (매국노)
+  { "articleId": 64, "like": 56, "angry": 34560, "sad": 6780, "touched": 45, "wantMore": 340 }, // 고인 모독
+  { "articleId": 65, "like": 4, "angry": 48900, "sad": 450, "touched": 3, "wantMore": 450 }, // 위인 폄하 (국민공분)
+  { "articleId": 68, "like": 670, "angry": 11230, "sad": 56, "touched": 12, "wantMore": 450 }, // 억지 지지
+  { "articleId": 70, "like": 6, "angry": 67890, "sad": 340, "touched": 1, "wantMore": 780 }, // 독도 망언 (최고 분노)
+  { "articleId": 72, "like": 34, "angry": 5670, "sad": 56, "touched": 4, "wantMore": 150 }, // 작가 모욕
+  { "articleId": 73, "like": 12, "angry": 23450, "sad": 670, "touched": 5, "wantMore": 230 }, // 노인 폄하
+  { "articleId": 66, "like": 45, "angry": 6780, "sad": 23, "touched": 3, "wantMore": 340 }, // 적반하장
+  { "articleId": 42, "like": 56, "angry": 21340, "sad": 450, "touched": 2, "wantMore": 450 }, // 지역감정 조장
+  { "articleId": 43, "like": 12, "angry": 34560, "sad": 560, "touched": 1, "wantMore": 340 }, // 친일파 옹호
+  { "articleId": 44, "like": 10, "angry": 28900, "sad": 4520, "touched": 5, "wantMore": 670 }, // 불법 촬영
+  { "articleId": 50, "like": 450, "angry": 15670, "sad": 67, "touched": 5, "wantMore": 560 }, // 일베 활동
+
+  // [사건/사고 - 잡범 수준]
+  { "articleId": 31, "like": 34, "angry": 4560, "sad": 23, "touched": 2, "wantMore": 150 }, // 교무실 침입
+  { "articleId": 33, "like": 15, "angry": 18900, "sad": 560, "touched": 12, "wantMore": 340 }, // 배달기사 욕설
+
+  // [속보/판결 - 형량 인플레이션]
+  { "articleId": 36, "like": 18900, "angry": 230, "sad": 12, "touched": 89, "wantMore": 4560 }, // 징역 64년
+  { "articleId": 37, "like": 21340, "angry": 150, "sad": 8, "touched": 56, "wantMore": 5670 }, // 징역 96년
+  { "articleId": 38, "like": 25670, "angry": 89, "sad": 5, "touched": 45, "wantMore": 6780 }, // 징역 128년
+  { "articleId": 39, "like": 28900, "angry": 67, "sad": 3, "touched": 34, "wantMore": 7890 }, // 징역 160년
+  { "articleId": 40, "like": 56780, "angry": 45, "sad": 2, "touched": 1250, "wantMore": 12340 }, // 징역 1242년 (축제 분위기)
+
+  // [엽기/동물학대 - 혐오]
+  { "articleId": 45, "like": 8, "angry": 65430, "sad": 12340, "touched": 5, "wantMore": 560 }, // 강아지 학대
+  { "articleId": 46, "like": 5, "angry": 58900, "sad": 8900, "touched": 2, "wantMore": 450 }, // 나비탕
+  { "articleId": 47, "like": 120, "angry": 3450, "sad": 45, "touched": 5, "wantMore": 890 }, // 무식 인증
+  { "articleId": 48, "like": 4, "angry": 23450, "sad": 3450, "touched": 1, "wantMore": 230 }, // 고양이 요리 발언
+  { "articleId": 51, "like": 12, "angry": 5670, "sad": 120, "touched": 2, "wantMore": 150 }, // 자전거 파손
+  { "articleId": 52, "like": 15, "angry": 6780, "sad": 56, "touched": 3, "wantMore": 230 }, // 따릉이 투기
+
+  // [피날레 - 반성 없는 태도]
+  { "articleId": 53, "like": 3450, "angry": 7890, "sad": 45, "touched": 23, "wantMore": 1240 }, // 범행 인정
+  { "articleId": 54, "like": 23, "angry": 45670, "sad": 780, "touched": 1, "wantMore": 560 }  // 피해자 모욕
+];
+
+    // ==========================================
+    // 3. 댓글 데이터 (News Comments) - 기사 ID 기준
+    // dislikes(비추천) 필드 추가됨
+    // ==========================================
+let newsCommentData = [
+  // ==========================================================
+  // [기사 41] 징역 31,968년 선고 (사상 초유의 판결)
+  // ==========================================================
+  { "id": 1001, "articleId": 41, "user": "지나가던개", "content": "캬 3만년 ㅋㅋㅋㅋㅋㅋㅋ 판사님 드디어 일하네", "date": "2025-05-20 15:01", "likes": 5042, "dislikes": 12 },
+  { "id": 1002, "articleId": 41, "user": "애국보수김씨", "content": "나라가 제대로 돌아가는구만... 저런 싹수 노란 놈들은 영구 격리가 답이다. 문재인 때는 상상도 못할 일이지 암.", "date": "2025-05-20 15:03", "likes": 120, "dislikes": 450 },
+  { "id": 1003, "articleId": 41, "user": "방구석변호사", "content": "근데 이거 항소하면 깎이는 거 아님? 한국 법 믿을 수가 있어야지;", "date": "2025-05-20 15:05", "likes": 890, "dislikes": 2 },
+  { "id": 1004, "articleId": 41, "user": "한정호팬클럽회장", "content": "오빠 힘내세요ㅠㅠㅠㅠ 판사가 미친듯 우리가 지켜줄게 ㅠㅠㅠ", "date": "2025-05-20 15:06", "likes": 5, "dislikes": 2400 },
+  { "id": 1005, "articleId": 41, "user": "ㅇㅇ", "content": "알빠노? ㅋㅋ 감옥에서 썩어라 이기야", "date": "2025-05-20 15:10", "likes": 300, "dislikes": 10 },
+  { "id": 1006, "articleId": 41, "user": "예수쟁이", "content": "회개하십시오... 감옥은 육신의 감옥일 뿐, 회개하지 않으면 지옥의 불길이 기다립니다.", "date": "2025-05-20 15:15", "likes": 20, "dislikes": 80 },
+
+  // ==========================================================
+  // [기사 56] 윤하진 향해 패륜 막말 ("엄마 없는 티...")
+  // ==========================================================
+  { "id": 1007, "articleId": 56, "user": "유교보이", "content": "아무리 철이 없어도 건드릴 게 있고 안 건드릴 게 있지 부모 욕은 선 넘었네;;", "date": "2025-05-20 14:32", "likes": 1500, "dislikes": 5 },
+  { "id": 1008, "articleId": 56, "user": "디씨인사이드", "content": "패드립 수준 ㅋㅋㅋㅋ 야갤에서도 거를 듯", "date": "2025-05-20 14:35", "likes": 670, "dislikes": 12 },
+  { "id": 1009, "articleId": 56, "user": "맘충사절", "content": "가정교육 독학했누? 부모 얼굴 좀 보고 싶네 ㅋㅋㅋ", "date": "2025-05-20 14:40", "likes": 880, "dislikes": 3 },
+  { "id": 1010, "articleId": 56, "user": "팩트폭격기", "content": "솔직히 윤하진도 평소에 행실이 별로였음 ㅋㅋ 아니땐 굴뚝에 연기 나겠냐? 중립 기어 박는다.", "date": "2025-05-20 14:45", "likes": 50, "dislikes": 1200 },
+  { "id": 1011, "articleId": 56, "user": "대댓글파이터", "content": "@팩트폭격기 니가 윤하진이냐? 아님 한정호냐? 쿨찐병 걸렸네 ㅄ", "date": "2025-05-20 14:48", "likes": 400, "dislikes": 2 },
+  { "id": 1012, "articleId": 56, "user": "광고", "content": "[속보] 이재명, 윤석열 관련주 긴급 입수... 무료 카톡방 입장 클릭", "date": "2025-05-20 15:00", "likes": 0, "dislikes": 50 },
+
+  // ==========================================================
+  // [기사 57] 독재 비유 논란
+  // ==========================================================
+  { "id": 1013, "articleId": 57, "user": "518지킴이", "content": "어린 놈이 역사를 뭘 안다고 전두환을 입에 올리나? 싹수가 노랗다.", "date": "2025-05-20 13:50", "likes": 450, "dislikes": 200 },
+  { "id": 1014, "articleId": 57, "user": "통구이박멸", "content": "전두환 찬양하는 거 보니 딱 그짝 지역이네 ㅋㅋ 과학이다 과학", "date": "2025-05-20 14:00", "likes": 100, "dislikes": 600 },
+  { "id": 1015, "articleId": 57, "user": "엔두", "content": "전장군님이 니 친구냐? 어디 감히...", "date": "2025-05-20 14:05", "likes": 300, "dislikes": 300 },
+  { "id": 1016, "articleId": 57, "user": "급식", "content": "비유 찰지네 ㅋㅋㅋ 윤하진 독재자 맞긴 함 ㅇㅇ 내가 봄", "date": "2025-05-20 14:10", "likes": 20, "dislikes": 150 },
+
+  // ==========================================================
+  // [기사 59] 불법사이트 원천 봉쇄
+  // ==========================================================
+  { "id": 1017, "articleId": 59, "user": "야동매니아", "content": "VPN 막혔노? ㅋㅋㅋㅋㅋ 인생 망했네 ㅋㅋㅋㅋ", "date": "2025-05-20 11:30", "likes": 500, "dislikes": 2 },
+  { "id": 1018, "articleId": 59, "user": "학부모연대", "content": "정말 잘한 조치입니다! 우리 아이들도 걱정인데 정부가 더 강력하게 규제해야 합니다!", "date": "2025-05-20 11:35", "likes": 800, "dislikes": 20 },
+  { "id": 1019, "articleId": 59, "user": "자유주의자", "content": "아무리 그래도 국가가 개인의 인터넷 접속을 차단? 이거 완전 중국 꼴 나겠네 ㅉㅉ 검열 공화국", "date": "2025-05-20 11:40", "likes": 150, "dislikes": 600 },
+  { "id": 1020, "articleId": 59, "user": "ㅇㅇ", "content": "히토미 꺼라 ㅋㅋㅋㅋ", "date": "2025-05-20 11:45", "likes": 300, "dislikes": 0 },
+  { "id": 1021, "articleId": 59, "user": "한남재기", "content": "으 냄져들 수준봐라 ㅋㅋ 불법사이트 차단했다고 발작하는 거 봐. 잠재적 성범죄자들 ㅉㅉ", "date": "2025-05-20 12:00", "likes": 50, "dislikes": 400 },
+  { "id": 1022, "articleId": 59, "user": "반페미전사", "content": "@한남재기 쿵쾅이 검거 완료. 살이나 빼라", "date": "2025-05-20 12:05", "likes": 350, "dislikes": 40 },
+
+  // ==========================================================
+  // [기사 566] 게이 확정 발언
+  // ==========================================================
+  { "id": 1023, "articleId": 566, "user": "PC충아님", "content": "게이인 건 상관없는데 왜 자꾸 떠벌리고 다니냐? 안물안궁;;", "date": "2025-05-20 08:10", "likes": 1200, "dislikes": 50 },
+  { "id": 1024, "articleId": 566, "user": "부녀자", "content": "헐... 정호x하진 주식 떡상하나요? ㅠㅠㅠ 대박", "date": "2025-05-20 08:15", "likes": 30, "dislikes": 500 },
+  { "id": 1025, "articleId": 566, "user": "개독박멸", "content": "종교쟁이들 몰려와서 발작하겠네 팝콘 뜯자 ㅋㅋ", "date": "2025-05-20 08:20", "likes": 200, "dislikes": 30 },
+  { "id": 1026, "articleId": 566, "user": "주님의종", "content": "동성애는 죄악입니다. 에이즈의 원흉! 차별금지법 반대!!!", "date": "2025-05-20 08:30", "likes": 100, "dislikes": 400 },
+  { "id": 1027, "articleId": 566, "user": "ㅇㅇ", "content": "게이야... 똥꼬 헐겠다 이기...", "date": "2025-05-20 09:00", "likes": 50, "dislikes": 10 },
+  { "id": 1028, "articleId": 566, "user": "한정호", "content": "저 아닙니다. 해킹당했습니다.", "date": "2025-05-20 09:30", "likes": 5, "dislikes": 1000 },
+
+  // ==========================================================
+  // [기사 60] 대전 비하 발언
+  // ==========================================================
+  { "id": 1029, "articleId": 60, "user": "대전토박이", "content": "성심당 튀김소보로로 쳐맞고 싶냐? 대전 오지 마라 뒤진다.", "date": "2025-05-20 16:15", "likes": 2000, "dislikes": 5 },
+  { "id": 1030, "articleId": 60, "user": "서울촌놈", "content": "틀린 말은 아니지 않음? ㅋㅋ 빵집 말고 뭐 있노?", "date": "2025-05-20 16:20", "likes": 50, "dislikes": 600 },
+  { "id": 1031, "articleId": 60, "user": "꿈돌이", "content": "노잼도시라고 욕하는 건 참아도 성심당 욕하는 건 못 참는다.", "date": "2025-05-20 16:30", "likes": 1500, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 71] 양재천 중국 영토설
+  // ==========================================================
+  { "id": 1032, "articleId": 71, "user": "조선족아웃", "content": "이새끼 짱깨였네 ㅋㅋㅋ 공안 당국 뭐하냐 간첩 안 잡아가고", "date": "2025-05-20 17:30", "likes": 890, "dislikes": 10 },
+  { "id": 1033, "articleId": 71, "user": "핑핑이", "content": "하나의 중국을 지지합니다^^ (관리자에 의해 규제된 댓글입니다)", "date": "2025-05-20 17:35", "likes": 1, "dislikes": 5000 },
+  { "id": 1034, "articleId": 71, "user": "강남구민", "content": "집값 떨어진다 미친놈아 조용히 해라", "date": "2025-05-20 17:40", "likes": 300, "dislikes": 50 },
+
+  // ==========================================================
+  // [기사 40] 일베 게시글 1,242년 선고
+  // ==========================================================
+  { "id": 1035, "articleId": 40, "user": "일베충", "content": "표현의 자유 억압이노이기야! 문재앙이 시켰노?", "date": "2025-05-20 16:05", "likes": 12, "dislikes": 2000 },
+  { "id": 1036, "articleId": 40, "user": "클리앙", "content": "벌레 한 마리 컷~ ㅋㅋㅋ 정의구현 꺼억~", "date": "2025-05-20 16:10", "likes": 500, "dislikes": 100 },
+  { "id": 1037, "articleId": 40, "user": "판사", "content": "땅땅땅.", "date": "2025-05-20 16:15", "likes": 1000, "dislikes": 0 },
+  
+  // ==========================================================
+  // [기사 45] 강아지 삼계탕 시도
+  // ==========================================================
+  { "id": 1038, "articleId": 45, "user": "캣맘", "content": "미친 사이코패스 새끼;;; 동물학대는 살인 전조증상임. 당장 사형시켜라", "date": "2025-05-17 12:10", "likes": 3000, "dislikes": 20 },
+  { "id": 1039, "articleId": 45, "user": "틀딱", "content": "옛날엔 다 보신탕 먹고 그랬어... 유난 떨기는 쯧쯧... 그래도 남의 집 개는 좀...", "date": "2025-05-17 12:20", "likes": 50, "dislikes": 1500 },
+  { "id": 1040, "articleId": 45, "user": "댕댕이맘", "content": "손발이 벌벌 떨리고 눈물이 나요 ㅠㅠㅠ 우리 애기들한테 어떻게 저런 짓을...", "date": "2025-05-17 12:30", "likes": 800, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 7] 뽀로로 주스 집착
+  // ==========================================================
+  { "id": 1041, "articleId": 7, "user": "심리학자", "content": "전형적인 애정결핍에 의한 퇴행 현상입니다. 치료가 필요해 보이네요.", "date": "2025-05-19 10:10", "likes": 400, "dislikes": 2 },
+  { "id": 1042, "articleId": 7, "user": "급식충", "content": "솔직히 뽀로로 주스 딸기맛은 인정이지 ㅋㅋㅋ 근데 파란색은 선 넘네 맛알못 쉐리", "date": "2025-05-19 10:15", "likes": 120, "dislikes": 10 },
+  { "id": 1043, "articleId": 7, "user": "ㅇㅇ", "content": "덩치는 산만한 게 쪽팔리지도 않나 ㅋㅋ", "date": "2025-05-19 10:20", "likes": 300, "dislikes": 1 },
+
+  // ==========================================================
+  // [기사 18] 남초에서 여시로 전향 의혹
+  // ==========================================================
+  { "id": 1044, "articleId": 18, "user": "이대남", "content": "박쥐 새끼네 이거 ㅋㅋ 스윗한남 코스프레 하려고 여시 가입했누?", "date": "2025-05-20 14:10", "likes": 600, "dislikes": 10 },
+  { "id": 1045, "articleId": 18, "user": "언냐", "content": "한남이 여시를 왜 와? 냄새나니까 좀 꺼져 ㅠㅠ 으", "date": "2025-05-20 14:20", "likes": 200, "dislikes": 300 },
+  { "id": 1046, "articleId": 18, "user": "중립", "content": "자아분열 레전드네. 정신병동 자리 하나 비워놔라.", "date": "2025-05-20 14:30", "likes": 450, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 27] 역삼동 남성 비하
+  // ==========================================================
+  { "id": 1047, "articleId": 27, "user": "역삼동주민", "content": "니가 제일 물 흐리고 있어 이 XX야 ㅋㅋㅋ 거울 좀 봐라", "date": "2025-05-20 15:50", "likes": 900, "dislikes": 0 },
+  { "id": 1048, "articleId": 27, "user": "페미니스트", "content": "맞는 말 했네 뭐 ㅋㅋ 한남들 찔려서 부들부들하는 거 봐", "date": "2025-05-20 16:00", "likes": 50, "dislikes": 1200 },
+  { "id": 1049, "articleId": 27, "user": "ㅇㅇ", "content": "너도 남자잖아... 팀킬 무엇?", "date": "2025-05-20 16:10", "likes": 500, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 12] 맞춤법 실수 논란
+  // ==========================================================
+  { "id": 1050, "articleId": 12, "user": "세종대왕", "content": "나를 무덤에서 꺼내다오... 저 놈 뚝배기를 깰 것이다.", "date": "2025-05-20 08:40", "likes": 5000, "dislikes": 0 },
+  { "id": 1051, "articleId": 12, "user": "국어쌤", "content": "낫다/낳다 구분 못하는 건 지능 문제임. 이건 쉴드 불가.", "date": "2025-05-20 08:45", "likes": 800, "dislikes": 2 },
+  { "id": 1052, "articleId": 12, "user": "난독증", "content": "머 어때서? 뜻만 통하면 되는거 아님? 꼰대들 극협이네", "date": "2025-05-20 09:00", "likes": 10, "dislikes": 1500 },
+
+  // ==========================================================
+  // [기사 68] 오물풍선 & 윤석열 지지?
+  // ==========================================================
+  { "id": 1053, "articleId": 68, "user": "대깨윤", "content": "역시 애국청년 한정호! 대통령님 만세!", "date": "2025-05-20 17:00", "likes": 20, "dislikes": 800 },
+  { "id": 1054, "articleId": 68, "user": "대깨문", "content": "2찍 수준 ㅋㅋㅋ 오물이나 뒤집어 써라", "date": "2025-05-20 17:10", "likes": 400, "dislikes": 50 },
+  { "id": 1055, "articleId": 68, "user": "중도", "content": "둘 다 똑같은 놈들끼리 잘 논다... 정치가 장난이냐?", "date": "2025-05-20 17:20", "likes": 600, "dislikes": 10 },
+
+  // ==========================================================
+  // [기사 62] 강남구 분리독립
+  // ==========================================================
+  { "id": 1056, "articleId": 62, "user": "강남토박이", "content": "쪽팔리니까 제발 조용히 좀 해줘... 어디 가서 강남 산다고 말을 못 하겠어", "date": "2025-05-20 10:35", "likes": 700, "dislikes": 5 },
+  { "id": 1057, "articleId": 62, "user": "비강남", "content": "강남 공화국이냐? ㅋㅋㅋ 여권 들고 다니라 그래라", "date": "2025-05-20 10:40", "likes": 300, "dislikes": 10 },
+  { "id": 1058, "articleId": 62, "user": "부동산카페", "content": "호재인가요? 집값 영향 분석 부탁드립니다.", "date": "2025-05-20 10:50", "likes": 10, "dislikes": 200 },
+
+  // ==========================================================
+  // [기사 17] 뉴진스 비하 발언
+  // ==========================================================
+  { "id": 1059, "articleId": 17, "user": "버니즈", "content": "한정호 너 오늘 밤길 조심해라. 감히 뉴진스를 건드려?", "date": "2025-05-20 11:35", "likes": 2000, "dislikes": 5 },
+  { "id": 1060, "articleId": 17, "user": "아이돌척척박사", "content": "강해린만 안다는 거 보니까 고양이상 좋아하는 듯 ㅋㅋㅋ 취향 확고하네", "date": "2025-05-20 11:40", "likes": 100, "dislikes": 50 },
+  { "id": 1061, "articleId": 17, "user": "힙찔이", "content": "아이돌 빠는 놈들 수준 ㅋㅋ 발작 버튼 눌렸쥬?", "date": "2025-05-20 11:50", "likes": 20, "dislikes": 800 },
+
+  // ==========================================================
+  // [기사 4] 기괴한 릴스 전송 (스팸)
+  // ==========================================================
+  { "id": 1062, "articleId": 4, "user": "피해자1", "content": "아니 새벽 3시에 바퀴벌레 영상 보내는 심리가 뭐임? 진짜 죽이고 싶다", "date": "2025-05-19 20:10", "likes": 500, "dislikes": 0 },
+  { "id": 1063, "articleId": 4, "user": "틱톡커", "content": "관심병 말기입니다. 차단이 답.", "date": "2025-05-19 20:15", "likes": 300, "dislikes": 0 },
+  { "id": 1064, "articleId": 4, "user": "광고", "content": "유튜브 구독자 1000명 1만원! 최저가 보장!", "date": "2025-05-19 20:30", "likes": 0, "dislikes": 50 },
+
+  // ==========================================================
+  // [기사 47, 48] 나비탕 & 나비는 새 발언
+  // ==========================================================
+  { "id": 1065, "articleId": 47, "user": "파브르", "content": "나비가 새? ㅋㅋㅋ 초등학교 다시 가라. 아, 중학교도 못 마쳤나?", "date": "2025-05-18 10:05", "likes": 600, "dislikes": 1 },
+  { "id": 1066, "articleId": 48, "user": "냥냥이", "content": "고양이를 먹어? 인간 말종이네 진짜. 카라에 신고 넣었습니다 ^^", "date": "2025-05-18 10:35", "likes": 1000, "dislikes": 10 },
+  { "id": 1067, "articleId": 48, "user": "털바퀴킬러", "content": "솔직히 캣맘들 설치는 거 꼴보기 싫긴 함 ㅋㅋ 한정호 연전연승", "date": "2025-05-18 10:40", "likes": 20, "dislikes": 900 },
+
+  // ==========================================================
+  // [기사 20] "정민이는 나의 것" 소유권 주장
+  // ==========================================================
+  { "id": 1068, "articleId": 20, "user": "BL망붕", "content": "어머머머 미쳤다 집착공 키워드 떴냐? ㅠㅠㅠ 정호x정민 팝니다", "date": "2025-05-20 09:55", "likes": 50, "dislikes": 400 },
+  { "id": 1069, "articleId": 20, "user": "정상인", "content": "범죄입니다. 로맨스가 아니라 스토킹이라고요 미친놈들아.", "date": "2025-05-20 10:00", "likes": 800, "dislikes": 2 },
+  { "id": 1070, "articleId": 20, "user": "하정민지인", "content": "정민이 진짜 힘들어해요... 제발 그만해라 정호야", "date": "2025-05-20 10:05", "likes": 1200, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 34] 급식실 껌 투기 DNA 검사
+  // ==========================================================
+  { "id": 1071, "articleId": 34, "user": "CSI", "content": "학교에서 DNA 검사까지 ㅋㅋㅋㅋㅋ 진짜 세기의 범죄자 나셨네", "date": "2025-05-19 13:10", "likes": 600, "dislikes": 0 },
+  { "id": 1072, "articleId": 34, "user": "영양사", "content": "조리사님들이 얼마나 고생하시는데... 바닥 껌 떼는 게 얼마나 힘든지 아니?", "date": "2025-05-19 13:15", "likes": 900, "dislikes": 1 },
+  { "id": 1073, "articleId": 34, "user": "ㅇㅇ", "content": "저거 껌 아닐 수도 있음... 가래침 섞인 거 아님? 우웩", "date": "2025-05-19 13:20", "likes": 200, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 53, 54] 범행 인정 및 "그들은 쓰레기" 망언
+  // ==========================================================
+  { "id": 1074, "articleId": 53, "user": "법조인", "content": "인정한다고 형량이 줄 것 같냐? 오히려 괘씸죄 추가다 임마", "date": "2025-05-21 09:05", "likes": 700, "dislikes": 0 },
+  { "id": 1075, "articleId": 54, "user": "분노조절장애", "content": "와... 진짜 끝까지 반성 안 하네? 내가 가서 교육 좀 시켜줘?", "date": "2025-05-21 09:15", "likes": 1500, "dislikes": 5 },
+  { "id": 1076, "articleId": 54, "user": "사탄", "content": "오늘도 1패 적립하고 갑니다. 저놈은 내가 봐도 악마네.", "date": "2025-05-21 09:20", "likes": 2000, "dislikes": 0 },
+  { "id": 1077, "articleId": 54, "user": "예비군", "content": "군대 보내서 정신 개조 시켜야 함. 아, 범죄자라 군대도 못 가나?", "date": "2025-05-21 09:25", "likes": 400, "dislikes": 10 },
+
+  // ==========================================================
+  // [기타 기사들 - 짤막 댓글 모음]
+  // ==========================================================
+  // 기사 1 (전담 취재팀)
+  { "id": 1078, "articleId": 1, "user": "기레기", "content": "할 짓 드럽게 없나 보네 ㅋㅋ 학생 하나를 24시간 감시하냐", "date": "2025-05-18 09:10", "likes": 50, "dislikes": 200 },
+  // 기사 63 (독립 반대)
+  { "id": 1079, "articleId": 63, "user": "독립운동가후손", "content": "피가 거꾸로 솟는다. 당장 이완용이랑 같이 부관참시해야 한다.", "date": "2025-05-15 08:30", "likes": 3000, "dislikes": 5 },
+  { "id": 1080, "articleId": 63, "user": "일뽕", "content": "솔직히 팩트 아님? 조센징들은 미개해서 지배받는 게 나았음 www", "date": "2025-05-15 08:35", "likes": 5, "dislikes": 5000 },
+  // 기사 39 (법정 모욕 징역 160년 추가)
+  { "id": 1081, "articleId": 39, "user": "수학자", "content": "31968 + 160... 계산하기도 힘들다 이젠 ㅋㅋ", "date": "2025-05-20 15:45", "likes": 400, "dislikes": 0 },
+  // 기사 25 (짜파게티)
+  { "id": 1082, "articleId": 25, "user": "백종원", "content": "물이 너무 많아유. 이건 짜파게티가 아니라 짜장국이여.", "date": "2025-05-20 08:10", "likes": 1000, "dislikes": 0 },
+  // 기사 23 (학원 폐지 시위)
+  { "id": 1083, "articleId": 23, "user": "대치동맘", "content": "공부 못하는 애들이 꼭 저러더라. 핑계 대지 말고 책이나 펴.", "date": "2025-05-18 14:10", "likes": 600, "dislikes": 20 },
+  { "id": 1084, "articleId": 23, "user": "수포자", "content": "한정호 열사님 지지합니다!!! 학원 없는 세상을 위하여!!!", "date": "2025-05-18 14:15", "likes": 50, "dislikes": 300 },
+  // 기사 31 (교무실 폰 절도)
+  { "id": 1085, "articleId": 31, "user": "명탐정", "content": "폰 중독이 이렇게 무섭습니다 여러분. 도둑질까지 하네.", "date": "2025-05-19 12:10", "likes": 200, "dislikes": 0 },
+  // ==========================================================
+  // [기사 61] UN 인권위 조사 예고
+  // ==========================================================
+  { "id": 1086, "articleId": 61, "user": "국격살살녹네", "content": "한정호 하나 때문에 UN까지 나서냐? ㅋㅋㅋ 나라 망신 레전드", "date": "2025-05-20 18:10", "likes": 2400, "dislikes": 20 },
+  { "id": 1087, "articleId": 61, "user": "애국청년", "content": "내정간섭 반대합니다!! 우리 아이는 우리가 알아서 교육합니다!!", "date": "2025-05-20 18:15", "likes": 50, "dislikes": 800 },
+
+  // ==========================================================
+  // [기사 69] 절도 혐의 기소
+  // ==========================================================
+  { "id": 1088, "articleId": 69, "user": "편의점알바", "content": "저런 애들 때문에 재고 빵꾸나서 알바비 까임 ㅡㅡ 손모가지 잘라야 함", "date": "2025-05-20 09:35", "likes": 1500, "dislikes": 5 },
+  { "id": 1089, "articleId": 69, "user": "장발장", "content": "생계형 범죄 아님? 빵 하나 훔친 거 가지고 너무하네", "date": "2025-05-20 09:40", "likes": 10, "dislikes": 400 },
+
+  // ==========================================================
+  // [기사 67] 언론인 비하 ("김영선" 취급)
+  // ==========================================================
+  { "id": 1090, "articleId": 67, "user": "기자협회", "content": "언론의 자유를 침해하는 행위는 용납될 수 없습니다.", "date": "2025-05-20 12:10", "likes": 500, "dislikes": 100 },
+  { "id": 1091, "articleId": 67, "user": "ㅇㅇ", "content": "근데 김영선이 누구임? ㅋㅋㅋ 틀딱들만 아는 드립 치누", "date": "2025-05-20 12:15", "likes": 200, "dislikes": 10 },
+
+  // ==========================================================
+  // [기사 35] 1심 징역 32년 (허위사실)
+  // ==========================================================
+  { "id": 1092, "articleId": 35, "user": "사이다", "content": "32년 ㅋㅋㅋㅋ 인생 절반 손해봤어~", "date": "2025-05-20 10:10", "likes": 800, "dislikes": 0 },
+  { "id": 1093, "articleId": 35, "user": "법조게이", "content": "판례상 너무 센데? 항소하면 집유 나올 듯 ㅇㅇ", "date": "2025-05-20 10:15", "likes": 50, "dislikes": 200 },
+
+  // ==========================================================
+  // [기사 32] 교내 기물 파손
+  // ==========================================================
+  { "id": 1094, "articleId": 32, "user": "행정실장", "content": "정호야 제발 변상해라... 예산 없다...", "date": "2025-05-19 15:50", "likes": 300, "dislikes": 0 },
+  { "id": 1095, "articleId": 32, "user": "파괴왕", "content": "화장실 문짝이 두부냐? 툭 치니까 깨지게? 부실공사 의심해봐야 함", "date": "2025-05-19 16:00", "likes": 20, "dislikes": 150 },
+
+  // ==========================================================
+  // [기사 11] "안자놓고 잤다" 거짓말
+  // ==========================================================
+  { "id": 1096, "articleId": 11, "user": "여친", "content": "남친이 맨날 이러는데 헤어져야 함? ㅋㅋ", "date": "2025-05-20 00:00", "likes": 50, "dislikes": 0 },
+  { "id": 1097, "articleId": 11, "user": "롤충", "content": "새벽 3시에 랭겜 돌리는 건 못 참지 ㅋㅋㅋ 티어 어디냐?", "date": "2025-05-20 00:10", "likes": 100, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 2] 부모님 성희롱 (패드립)
+  // ==========================================================
+  { "id": 1098, "articleId": 2, "user": "유교탈레반", "content": "부모 욕하는 놈은 혀를 뽑아야 한다. 금수만도 못한 놈.", "date": "2025-05-20 11:10", "likes": 2000, "dislikes": 10 },
+  { "id": 1099, "articleId": 2, "user": "통매음전문", "content": "이건 빼박 통매음입니다. 합의금 최소 500부터 시작.", "date": "2025-05-20 11:15", "likes": 500, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 6] "운지" 발언 논란
+  // ==========================================================
+  { "id": 1100, "articleId": 6, "user": "노무현재단", "content": "고인을 모독하는 용어를 사용하는 것은 명백한 혐오 범죄입니다.", "date": "2025-05-20 12:40", "likes": 1500, "dislikes": 100 },
+  { "id": 1101, "articleId": 6, "user": "일베충", "content": "운지가 왜 욕이노? 자연인 말하는 건데? 선동 ㅁㅈㅎ", "date": "2025-05-20 12:45", "likes": 10, "dislikes": 2000 },
+  { "id": 1102, "articleId": 6, "user": "디씨", "content": "현실에서 일베 용어 쓰는 놈 처음 봄 ㅋㅋㅋ 사회생활 가능?", "date": "2025-05-20 12:50", "likes": 800, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 8] 뽀로로 주스 무단 투기
+  // ==========================================================
+  { "id": 1103, "articleId": 8, "user": "환경미화원", "content": "쓰레기는 쓰레기통에... 기본이 안 되어 있네.", "date": "2025-05-19 10:40", "likes": 600, "dislikes": 0 },
+  { "id": 1104, "articleId": 8, "user": "뽀로로", "content": "노는 게 제일 좋아~ 친구들 모여라~ (한정호 제외)", "date": "2025-05-19 10:45", "likes": 300, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 9, 10, 15] 폭행 및 욕설 (하준, 하진, 정민)
+  // ==========================================================
+  { "id": 1105, "articleId": 9, "user": "학폭위", "content": "언어 폭력도 학폭입니다. 생기부에 빨간 줄 긋자.", "date": "2025-05-19 14:10", "likes": 500, "dislikes": 2 },
+  { "id": 1106, "articleId": 10, "user": "경찰", "content": "주먹질 하려다 경찰 오니까 쫄았죠? ㅋㅋㅋ", "date": "2025-05-20 15:40", "likes": 400, "dislikes": 5 },
+  { "id": 1107, "articleId": 15, "user": "하정민맘", "content": "내 아들 얼굴에 흉터 남으면 어쩔 거야! 피눈물 난다 진짜 ㅠㅠ", "date": "2025-05-20 17:10", "likes": 1000, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 13] 주시경 선생 모욕
+  // ==========================================================
+  { "id": 1108, "articleId": 13, "user": "역사쌤", "content": "주시경 선생님이 계셨기에 니가 한글로 욕도 할 수 있는 거다.", "date": "2025-05-20 09:10", "likes": 1200, "dislikes": 0 },
+  { "id": 1109, "articleId": 13, "user": "ㅇㅇ", "content": "국어 9등급 확정 ㅋㅋㅋ 밥은 안 먹여주지 쌀을 주시경? 엌ㅋㅋㅋ", "date": "2025-05-20 09:15", "likes": 50, "dislikes": 300 },
+
+  // ==========================================================
+  // [기사 14] 손가락 욕설
+  // ==========================================================
+  { "id": 1110, "articleId": 14, "user": "김여사", "content": "운전하다가 봤는데 진짜 식겁했어요. 눈이 풀려있던데 마약 검사 해야 함.", "date": "2025-05-19 16:10", "likes": 400, "dislikes": 2 },
+  { "id": 1111, "articleId": 14, "user": "힙합", "content": "뻑큐는 힙합인데? Thug Life~", "date": "2025-05-19 16:15", "likes": 10, "dislikes": 500 },
+
+  // ==========================================================
+  // [기사 16] 오물풍선 지지
+  // ==========================================================
+  { "id": 1112, "articleId": 16, "user": "탈북민", "content": "북한 실상을 모르니까 저런 소리 하지... 아오지 탄광 보내야 정신 차림.", "date": "2025-05-21 07:10", "likes": 800, "dislikes": 5 },
+  { "id": 1113, "articleId": 16, "user": "간첩신고113", "content": "이건 국가보안법 위반 아님? 국정원 일해라", "date": "2025-05-21 07:15", "likes": 600, "dislikes": 10 },
+
+  // ==========================================================
+  // [기사 19, 20, 21] 애정 전선 및 게이 이슈
+  // ==========================================================
+  { "id": 1114, "articleId": 19, "user": "어장관리녀", "content": "와 나보다 심하네 ㅋㅋㅋ 양다리가 아니라 문어발이여", "date": "2025-05-19 18:10", "likes": 200, "dislikes": 20 },
+  { "id": 1115, "articleId": 21, "user": "무파사팬", "content": "님 제발 우리 형 언급하지 마세요 기분 나쁨;;", "date": "2025-05-20 15:10", "likes": 300, "dislikes": 0 },
+  { "id": 1116, "articleId": 21, "user": "부녀자", "content": "알페스(RPS) 작작 해라... 실존 인물 가지고 뭐 하는 짓?", "date": "2025-05-20 15:15", "likes": 500, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 22] 허위 기사 작성 (메타)
+  // ==========================================================
+  { "id": 1117, "articleId": 22, "user": "소설가", "content": "필력은 좋네 ㅋㅋㅋ 소설을 써라 그냥", "date": "2025-05-20 16:40", "likes": 100, "dislikes": 10 },
+  { "id": 1118, "articleId": 22, "user": "팩트체크", "content": "지금 내가 읽고 있는 이 기사는 진짜 맞음? 혼란하다 혼란해", "date": "2025-05-20 16:45", "likes": 400, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 24] 횡단보도 당연한 소리
+  // ==========================================================
+  { "id": 1119, "articleId": 24, "user": "고라니", "content": "무단횡단하다 치이면 약도 없다. 니 목숨이나 챙겨라.", "date": "2025-05-20 12:10", "likes": 300, "dislikes": 0 },
+  { "id": 1120, "articleId": 24, "user": "꼰대", "content": "말은 청산유수네 아주 ㅋㅋㅋ 행동이 따라야지 쯧쯧", "date": "2025-05-20 12:15", "likes": 150, "dislikes": 2 },
+
+  // ==========================================================
+  // [기사 28] 하정민에게 누명 (화분)
+  // ==========================================================
+  { "id": 1121, "articleId": 28, "user": "하정민", "content": "야 한정호 너 진짜 그러는 거 아니다...", "date": "2025-05-19 17:10", "likes": 2000, "dislikes": 5 },
+  { "id": 1122, "articleId": 28, "user": "탐정", "content": "범인은 이 안에 있어! (CCTV를 가리키며)", "date": "2025-05-19 17:15", "likes": 100, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 29] 어린이집 점거
+  // ==========================================================
+  { "id": 1123, "articleId": 29, "user": "맘카페회원", "content": "우리 애 다니는 어린이집인데... 애들이 무서워서 경기를 일으켜요. 고소할 거예요.", "date": "2025-05-18 11:10", "likes": 800, "dislikes": 2 },
+  { "id": 1124, "articleId": 29, "user": "응애", "content": "미끄럼틀 내꺼야 비켜 ㅠㅠ", "date": "2025-05-18 11:15", "likes": 50, "dislikes": 10 },
+
+  // ==========================================================
+  // [기사 49] 김서진 대머리 시도
+  // ==========================================================
+  { "id": 1125, "articleId": 49, "user": "탈모인", "content": "머리카락이 얼마나 소중한데... 너는 진짜 사형감이다.", "date": "2025-05-20 14:20", "likes": 1000, "dislikes": 0 },
+  { "id": 1126, "articleId": 49, "user": "바리캉", "content": "광명을 찾게 해준다니 ㅋㅋㅋ 사이비 교주냐?", "date": "2025-05-20 14:25", "likes": 200, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 58] 원희룡 음모론
+  // ==========================================================
+  { "id": 1127, "articleId": 58, "user": "국토부", "content": "장관님이 니 친구냐? 허위사실 유포 강력 대응합니다.", "date": "2025-05-20 10:55", "likes": 400, "dislikes": 50 },
+  { "id": 1128, "articleId": 58, "user": "음모론자", "content": "아니 땐 굴뚝에 연기 안 난다... 뭔가 있긴 한 듯? (솔깃)", "date": "2025-05-20 11:00", "likes": 20, "dislikes": 300 },
+
+  // ==========================================================
+  // [기사 64] 노무현 전 대통령 모욕
+  // ==========================================================
+  { "id": 1129, "articleId": 64, "user": "봉하마을", "content": "사람 새끼가 아니다. 부끄러운 줄 알아야지.", "date": "2025-05-23 09:10", "likes": 1200, "dislikes": 200 },
+  { "id": 1130, "articleId": 64, "user": "ㅇㅇ", "content": "합성 사진 수준 조잡하네 ㅋㅋㅋ 일베 정회원 등극 축하", "date": "2025-05-23 09:15", "likes": 50, "dislikes": 100 },
+
+  // ==========================================================
+  // [기사 65] 세종/이순신 폄하
+  // ==========================================================
+  { "id": 1131, "articleId": 65, "user": "거북선", "content": "나의 죽음을 적에게 알리지 말라... 저 놈은 빼고.", "date": "2025-05-20 12:10", "likes": 900, "dislikes": 0 },
+  { "id": 1132, "articleId": 65, "user": "매국노척결", "content": "광화문 광장에서 곤장 100대 맞아야 정신 차림.", "date": "2025-05-20 12:15", "likes": 600, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 70] 독도 망언
+  // ==========================================================
+  { "id": 1133, "articleId": 70, "user": "독도경비대", "content": "입국 금지 시켜라. 여권 뺏어.", "date": "2025-05-20 11:20", "likes": 3000, "dislikes": 5 },
+  { "id": 1134, "articleId": 70, "user": "광고", "content": "일본 여행 최저가! 오사카 2박 3일 19만원~ 클릭!", "date": "2025-05-20 11:30", "likes": 0, "dislikes": 100 },
+
+  // ==========================================================
+  // [기사 72] 천선란 작가 국적 변경
+  // ==========================================================
+  { "id": 1135, "articleId": 72, "user": "독서광", "content": "천선란 작가님 건드리지 마라... SF 소설 너무 많이 읽어서 현실 구분 못하나?", "date": "2025-05-20 14:50", "likes": 500, "dislikes": 0 },
+  { "id": 1136, "articleId": 72, "user": "외계인", "content": "삐리삐리... 지구인은 이상하다...", "date": "2025-05-20 14:55", "likes": 50, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 73] 노인 폄하 (지하철)
+  // ==========================================================
+  { "id": 1137, "articleId": 73, "user": "노인정회장", "content": "말세다 말세야... 젊은 놈이 어른 공경할 줄을 몰라 쯧쯧...", "date": "2025-05-20 16:00", "likes": 400, "dislikes": 50 },
+  { "id": 1138, "articleId": 73, "user": "MZ세대", "content": "틀딱들 지하철 공짜로 타면서 자리 양보 강요하는 건 싫지만, 패륜 발언은 선 넘었지.", "date": "2025-05-20 16:05", "likes": 200, "dislikes": 100 },
+
+  // ==========================================================
+  // [기사 42] 전라도 비하
+  // ==========================================================
+  { "id": 1139, "articleId": 42, "user": "광주시민", "content": "지역감정 조장하는 게 딱 80년대 마인드네. 촌스럽다 야.", "date": "2025-05-19 19:40", "likes": 800, "dislikes": 20 },
+  { "id": 1140, "articleId": 42, "user": "홍어", "content": "맛만 좋구만 왜 비하하냐 삭힌 홍어 코에 넣어불라", "date": "2025-05-19 19:45", "likes": 100, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 43] 친일파 옹호
+  // ==========================================================
+  { "id": 1141, "articleId": 43, "user": "역사왜곡반대", "content": "이완용이 외교관? ㅋㅋㅋ 나라 팔아먹은 게 외교냐? 매국이지.", "date": "2025-05-20 09:50", "likes": 1500, "dislikes": 5 },
+  { "id": 1142, "articleId": 43, "user": "뉴라이트", "content": "솔직히 냉정하게 평가할 부분도 있지 않나? (블라인드 처리된 댓글)", "date": "2025-05-20 09:55", "likes": 5, "dislikes": 1000 },
+
+  // ==========================================================
+  // [기사 44] 미술실 불법촬영
+  // ==========================================================
+  { "id": 1143, "articleId": 44, "user": "여학생", "content": "소름 돋아... 학교 어떻게 다녀 ㅠㅠ 퇴학시켜주세요 제발", "date": "2025-05-18 16:10", "likes": 2000, "dislikes": 0 },
+  { "id": 1144, "articleId": 44, "user": "한남충", "content": "좌표 좀 ㅋㅋㅋ 공유 앙망", "date": "2025-05-18 16:15", "likes": 2, "dislikes": 5000 },
+
+  // ==========================================================
+  // [기사 50] 일베 헤비유저
+  // ==========================================================
+  { "id": 1145, "articleId": 50, "user": "일베박멸", "content": "역시 까보일(까고 보니 일베)은 과학이다 ㅋㅋㅋ", "date": "2025-05-20 10:30", "likes": 600, "dislikes": 50 },
+  { "id": 1146, "articleId": 50, "user": "MC무현", "content": "게이야... 밖에서 티내지 말라니까... 직무유기 아니노?", "date": "2025-05-20 10:35", "likes": 20, "dislikes": 300 },
+
+  // ==========================================================
+  // [기사 33] 배달 기사 비하
+  // ==========================================================
+  { "id": 1147, "articleId": 33, "user": "딸배헌터", "content": "배달 기사가 니보다 돈 잘 벌어 임마 ㅋㅋㅋ 공부나 해라", "date": "2025-05-19 18:40", "likes": 700, "dislikes": 10 },
+  { "id": 1148, "articleId": 33, "user": "라이더유니온", "content": "노동의 가치를 모르는군. 너네 집 배달 거부한다.", "date": "2025-05-19 18:45", "likes": 1200, "dislikes": 5 },
+
+  // ==========================================================
+  // [기사 36, 37, 38] 징역 추가 (64년, 96년, 128년)
+  // ==========================================================
+  { "id": 1149, "articleId": 36, "user": "수학쌤", "content": "이거 등비수열이냐? 32, 64, 128... 다음은 256년?", "date": "2025-05-20 15:15", "likes": 400, "dislikes": 0 },
+  { "id": 1150, "articleId": 37, "user": "불로장생", "content": "오래 살아야겠네 ㅋㅋㅋ 출소하려면 사이보그 되어야 할 듯", "date": "2025-05-20 15:25", "likes": 300, "dislikes": 0 },
+  { "id": 1151, "articleId": 38, "user": "기네스", "content": "세계 신기록 달성 축하합니다! (부문: 최연소 최장기 복역)", "date": "2025-05-20 15:35", "likes": 500, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 46] 나비탕 (고양이)
+  // ==========================================================
+  { "id": 1152, "articleId": 46, "user": "캣맘충", "content": "길고양이 밥 주지 말라던 놈들 수준 ㅋㅋ 결국 잡아먹자고 하네", "date": "2025-05-17 12:40", "likes": 200, "dislikes": 500 },
+  { "id": 1153, "articleId": 46, "user": "동물농장", "content": "관절에 좋긴 개뿔... 기생충 감염되서 죽어라 퉤", "date": "2025-05-17 12:45", "likes": 800, "dislikes": 0 },
+
+  // ==========================================================
+  // [기사 51, 52] 자전거 파손 및 투기
+  // ==========================================================
+  { "id": 1154, "articleId": 51, "user": "자덕", "content": "내 도그마(자전거) 건드렸으면 지구 끝까지 쫓아가서 죽였다...", "date": "2025-05-19 20:10", "likes": 400, "dislikes": 0 },
+  { "id": 1155, "articleId": 52, "user": "따릉이", "content": "내가 뭘 잘못했다고 강물에 던져 ㅠㅠ 차가워...", "date": "2025-05-19 21:10", "likes": 300, "dislikes": 0 }
+];
+
+    // URL 파라미터 가져오기
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
 
-    // 3. 기사 렌더링 함수
+    // 4. 기사 렌더링 함수
     function loadArticle() {
       const articleId = getQueryParam('id');
       const contentArea = document.getElementById('article-content-area');
+      const footerArea = document.getElementById('article-footer');
 
-      // ID가 없는 경우
       if (!articleId) {
-        contentArea.innerHTML = "<h3>잘못된 접근입니다.</h3><p>기사 ID가 존재하지 않습니다.</p>";
+        contentArea.innerHTML = "<h3>기사를 선택해주세요.</h3>";
+        document.querySelector('.comment-section').style.display = 'none';
+        document.querySelector('.reaction-container').style.display = 'none';
         return;
       }
 
-      // JSON 데이터에서 ID가 일치하는 기사 찾기 (문자열/숫자 비교를 위해 == 사용)
       const article = newsData.find(news => news.id == articleId);
 
-      // 기사가 존재할 경우
       if (article) {
+        // 기사 헤더 및 본문
         const html = `
           <div class="article-header">
             <span class="category-badge">${article.category}</span>
@@ -1131,24 +1793,182 @@ const newsData = [
           <div class="article-body">
             ${article.content}
           </div>
-          <div class="article-footer">
-            <p class="reporter-profile"><strong>${article.reporter}</strong> | JBN News</p>
-            <p style="font-size:0.9rem; color:#666; margin-top:5px;">진실을 쫓는 기자, ${article.reporter}입니다. 제보를 기다립니다.</p>
-            <p style="font-size:0.8rem; color:#999; margin-top:20px;">Copyright ⓒ JBN News. 무단 전재 및 재배포 금지.</p>
-          </div>
         `;
         contentArea.innerHTML = html;
-        document.title = `${article.title} - JBN 뉴스`; // 브라우저 탭 제목 변경
+        
+        // 기자 푸터
+        footerArea.innerHTML = `
+          <p class="reporter-profile"><strong>${article.reporter}</strong> | JBN News</p>
+          <p style="font-size:0.9rem; color:#666; margin-top:5px;">진실을 쫓는 기자, ${article.reporter}입니다. 제보를 기다립니다.</p>
+          <p style="font-size:0.8rem; color:#999; margin-top:20px;">Copyright ⓒ JBN News. 무단 전재 및 재배포 금지.</p>
+        `;
+
+        document.title = `${article.title} - JBN 뉴스`;
+
+        // 기사 로드 후 반응 및 댓글 로드
+        loadReactions(article.id);
+        loadComments(article.id);
+
       } else {
-        // 기사를 찾지 못했을 경우 (아직 JSON에 추가 안 된 ID)
         contentArea.innerHTML = `
           <div style="padding:50px 0; text-align:center;">
-            <h2 style="font-family:'Noto Serif KR'; margin-bottom:20px;">준비 중인 기사입니다.</h2>
-            <p>해당 기사(ID: ${articleId})의 내용은 현재 업데이트 중이거나 삭제되었습니다.</p>
-            <p style="color:#888; margin-top:10px;">관리자에게 데이터 입력을 요청하세요.</p>
+            <h2 style="font-family:'Noto Serif KR'; margin-bottom:20px;">기사를 찾을 수 없습니다.</h2>
+            <p>삭제되었거나 존재하지 않는 기사입니다.</p>
           </div>
         `;
+        footerArea.innerHTML = "";
+        document.querySelector('.comment-section').style.display = 'none';
+        document.querySelector('.reaction-container').style.display = 'none';
       }
+    }
+
+    // ==========================================
+    // 5. 기사 반응(Reaction) 로드 및 기능
+    // ==========================================
+    function loadReactions(articleId) {
+        const reactionBtnsDiv = document.getElementById('reaction-btns');
+        let reactions = articleReactionData.find(r => r.articleId == articleId);
+
+        // 데이터가 없으면 기본값 생성 (0)
+        if (!reactions) {
+            reactions = { articleId: articleId, like: 0, angry: 0, sad: 0, touched: 0, wantMore: 0 };
+            articleReactionData.push(reactions);
+        }
+
+        // 버튼 렌더링 설정
+        const reactionTypes = [
+            { key: 'like', label: '좋아요', emoji: '👍' },
+            { key: 'angry', label: '화나요', emoji: '😡' },
+            { key: 'sad', label: '슬퍼요', emoji: '😢' },
+            { key: 'touched', label: '감동이에요', emoji: '🥺' },
+            { key: 'wantMore', label: '후속기사 원해요', emoji: '🔥' }
+        ];
+
+        let html = '';
+        reactionTypes.forEach(type => {
+            html += `
+                <div class="btn-reaction" onclick="clickReaction(${articleId}, '${type.key}')">
+                    <span class="emoji">${type.emoji}</span>
+                    <span class="label">${type.label}</span>
+                    <span class="count">${reactions[type.key].toLocaleString()}</span>
+                </div>
+            `;
+        });
+        reactionBtnsDiv.innerHTML = html;
+    }
+
+    // 반응 버튼 클릭 시 카운트 증가
+    function clickReaction(articleId, key) {
+        const reactions = articleReactionData.find(r => r.articleId == articleId);
+        if (reactions) {
+            reactions[key]++; // 카운트 증가
+            loadReactions(articleId); // 화면 갱신
+        }
+    }
+
+    // ==========================================
+    // 6. 댓글 로드 및 렌더링 함수
+    // ==========================================
+    function loadComments(articleId) {
+      const commentListUl = document.getElementById('comment-list-ul');
+      const commentCntSpan = document.getElementById('comment-cnt');
+      
+      const comments = newsCommentData.filter(c => c.articleId == articleId).reverse();
+      
+      commentCntSpan.innerText = comments.length;
+      commentListUl.innerHTML = "";
+
+      if (comments.length === 0) {
+        commentListUl.innerHTML = "<li style='padding:20px; text-align:center; color:#999;'>등록된 댓글이 없습니다. 첫 번째 댓글을 남겨주세요.</li>";
+        return;
+      }
+
+      comments.forEach(cmt => {
+        const li = document.createElement('li');
+        li.className = 'comment-item';
+        
+        // dislikes가 없으면 0으로 처리
+        const likeCount = cmt.likes || 0;
+        const dislikeCount = cmt.dislikes || 0;
+
+        li.innerHTML = `
+          <div class="cmt-meta">
+            <span class="cmt-writer">${cmt.user}</span>
+            <span class="cmt-date">${cmt.date}</span>
+          </div>
+          <div class="cmt-content">${cmt.content}</div>
+          <div class="cmt-actions">
+            <button class="btn-action" onclick="voteComment(${cmt.id}, 'like')">
+               👍 추천 ${likeCount}
+            </button>
+            <button class="btn-action" onclick="voteComment(${cmt.id}, 'dislike')">
+               👎 비추천 ${dislikeCount}
+            </button>
+            <button class="btn-action btn-report" onclick="alert('신고가 접수되었습니다.')">🚨 신고</button>
+          </div>
+        `;
+        commentListUl.appendChild(li);
+      });
+    }
+
+    // 댓글 추천/비추천 기능
+    function voteComment(commentId, type) {
+        const comment = newsCommentData.find(c => c.id === commentId);
+        if (comment) {
+            if (type === 'like') {
+                comment.likes = (comment.likes || 0) + 1;
+                alert('추천했습니다.');
+            } else if (type === 'dislike') {
+                comment.dislikes = (comment.dislikes || 0) + 1;
+                alert('비추천했습니다.');
+            }
+            // 해당 기사의 댓글 목록 다시 로드
+            loadComments(comment.articleId);
+        }
+    }
+
+    // 7. 댓글 추가 함수
+    function addComment() {
+      const articleId = getQueryParam('id');
+      const nameInput = document.getElementById('cmt-name');
+      const pwInput = document.getElementById('cmt-pw');
+      const textInput = document.getElementById('cmt-text');
+
+      const name = nameInput.value.trim();
+      const pw = pwInput.value.trim();
+      const content = textInput.value.trim();
+
+      if (!name || !pw || !content) {
+        alert("닉네임, 비밀번호, 내용을 모두 입력해주세요.");
+        return;
+      }
+
+      if (!articleId) {
+        alert("오류가 발생했습니다.");
+        return;
+      }
+
+      const now = new Date();
+      const timeString = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      const newComment = {
+        id: Date.now(),
+        articleId: parseInt(articleId),
+        user: name,
+        content: content,
+        date: timeString,
+        likes: 0,
+        dislikes: 0 // 새 댓글 비추천 0 초기화
+      };
+
+      newsCommentData.push(newComment);
+
+      nameInput.value = "";
+      pwInput.value = "";
+      textInput.value = "";
+
+      loadComments(articleId);
+      alert("댓글이 등록되었습니다.");
     }
 
     // 페이지 로드 시 실행
